@@ -2,6 +2,8 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
+const usersRouter = require('./users/users-router');
+
 
 // const cookieParser = require('cookie-parser');
 const session = require('express-session');
@@ -13,6 +15,9 @@ const server = express();
 server.use(helmet());
 server.use(express.json());
 server.use(cors());
+
+server.use('/api/users', usersRouter);
+
 
 server.use(session({
     name: 'sessionId',
@@ -30,9 +35,6 @@ server.use(session({
 server.get('/', (req, res) => {
   res.send("It's alive!");
 });
-
-
-
 
 server.post('/api/register', (req, res) => {
     let user = req.body;
