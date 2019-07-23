@@ -3,7 +3,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const usersRouter = require('./users/users-router');
-
+const authRouter = require('./auth/auth-router');
 
 // const cookieParser = require('cookie-parser');
 const session = require('express-session');
@@ -17,6 +17,7 @@ server.use(express.json());
 server.use(cors());
 
 server.use('/api/users', usersRouter);
+server.use('/api/auth', authRouter);
 
 
 server.use(session({
@@ -36,21 +37,21 @@ server.get('/', (req, res) => {
   res.send("It's alive!");
 });
 
-server.post('/api/register', (req, res) => {
-    let user = req.body;
-    const hash = bcrypt.hashSync(user.password, 10); // 2 ^ n
-    user.password = hash;
-    // let user = req.body;
-    // user.password = bcrypt.hashSync(user.password, 12)
+// server.post('/api/register', (req, res) => {
+//     let user = req.body;
+//     const hash = bcrypt.hashSync(user.password, 10); // 2 ^ n
+//     user.password = hash;
+//     // let user = req.body;
+//     // user.password = bcrypt.hashSync(user.password, 12)
     
-    Users.add(user)
-        .then(saved => {
-            res.status(201).json(saved)
-        })
-        .catch(error => {
-            res.status(500).json(error)
-        })
-})
+//     Users.add(user)
+//         .then(saved => {
+//             res.status(201).json(saved)
+//         })
+//         .catch(error => {
+//             res.status(500).json(error)
+//         })
+// })
 
 server.post('/api/login', (req, res) => {
     let { username, password } = req.body;
