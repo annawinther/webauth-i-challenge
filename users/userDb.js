@@ -12,7 +12,7 @@ module.exports = {
   }
 
   function findBy(filter) {
-    return db('users').where(filter);
+    return db('users').where(filter).first();
   }
 
   function add(user) {

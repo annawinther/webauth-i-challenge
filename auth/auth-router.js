@@ -19,4 +19,21 @@ router.post('/register', (req, res) => {
         })
 })
 
+router.post('/login', (req, res) => {
+    let { username, password } = req.body;
+
+    Users.findBy({ username })
+        .then(user => {
+            if(user && bcrypt.compareSync(password, user.password)){
+                req.session.user = user;
+                res.status(200).json(`logged in!`)
+            } else {
+                res.status(400).json({ message: 'could not find user' })
+            }
+        })
+        .catch(error => {
+            res.status(500).json({message: "could not log in" })
+        })
+})
+
 module.exports = router;
